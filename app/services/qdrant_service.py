@@ -4,6 +4,7 @@ from minio import Minio
 from minio.error import S3Error
 import uuid
 # from app.config import MINIO_ENDPOINT, MINIO_BUCKET, MINIO_ACCESS_KEY, MINIO_SECRET_KEY
+from app.config import QDRANT_HOST
 import tempfile
 
 
@@ -25,10 +26,10 @@ RELEASES_COLLECTION = "releases_collection"
 ARTISTS_COLLECTION = "artists_collection"
 
 class QdrantService:
-    endpoint = 'qdrant:6333'
+    endpoint = QDRANT_HOST
 
     def __init__(self):
-        self.client = QdrantClient("http://qdrant:6333") # Connect to existing Qdrant instance
+        self.client = QdrantClient(self.endpoint) # Connect to existing Qdrant instance
 
     def create_collections(self):
         self.client.create_collection(

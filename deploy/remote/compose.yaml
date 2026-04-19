@@ -15,8 +15,12 @@ services:
 
   qdrant:
     image: qdrant/qdrant:latest
+    restart: unless-stopped
     volumes:
       - qdrant_data:/qdrant/storage
+
+volumes:
+  qdrant_data:
 
 networks:
   project:

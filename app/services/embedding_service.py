@@ -5,8 +5,8 @@ import essentia
 essentia.log.warningActive = False
 
 class EmbeddingService:
-    EFFNET_MODEL = '/app/discogs-effnet-bs64-1.pb'
-    MUSICNN_MODEL = '/app/msd-musicnn-1.pb'
+    EFFNET_MODEL = '/models/discogs-effnet-bs64-1.pb'
+    MUSICNN_MODEL = '/models/msd-musicnn-1.pb'
 
     def __init__(self):
         self.effnet_model = TensorflowPredictEffnetDiscogs(

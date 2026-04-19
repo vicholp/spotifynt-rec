@@ -1,6 +1,9 @@
-FROM python:3.12.13
+FROM python:3.12.13-slim
 
-WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget
+
+WORKDIR /models
 
 RUN wget https://essentia.upf.edu/models/feature-extractors/discogs-effnet/discogs-effnet-bs64-1.pb
 
@@ -13,6 +16,8 @@ RUN wget https://essentia.upf.edu/models/classification-heads/mood_party/mood_pa
 
 RUN wget https://essentia.upf.edu/models/classification-heads/deam/deam-msd-musicnn-2.pb
 RUN wget https://essentia.upf.edu/models/feature-extractors/musicnn/msd-musicnn-1.pb
+
+WORKDIR /app
 
 RUN pip install wheel setuptools pip --upgrade
 

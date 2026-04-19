@@ -1,0 +1,28 @@
+services:
+  rec:
+    build:
+      dockerfile: ./deploy/local/python.Dockerfile
+      context: .
+    ports:
+      - "8006:8000"
+    env_file: .env
+    volumes:
+      - .:/app
+    command: fastapi dev app/main.py --host 0.0.0.0
+    networks:
+      - spotifynt
+      - default
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+volumes:
+  qdrant_data:
+
+networks:
+  spotifynt:
+    external: true

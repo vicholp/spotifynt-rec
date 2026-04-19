@@ -1,0 +1,24 @@
+name: ${APP_NAME}-${ENVIRONMENT}
+
+services:
+  rec:
+    image: ${DOCKER_REGISTRY}/${GITHUB_REPO}-python:${ENVIRONMENT}-latest
+    command: fastapi run app/main.py --host 0.0.0.0
+    restart: unless-stopped
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+    networks:
+      - project
+      - default
+    env_file:
+      - .env
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+networks:
+  project:
+    name: ${APP_NAME}-${ENVIRONMENT}
+    external: true

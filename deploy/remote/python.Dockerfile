@@ -17,6 +17,15 @@ RUN wget https://essentia.upf.edu/models/classification-heads/mood_party/mood_pa
 RUN wget https://essentia.upf.edu/models/classification-heads/deam/deam-msd-musicnn-2.pb
 RUN wget https://essentia.upf.edu/models/feature-extractors/musicnn/msd-musicnn-1.pb
 
+RUN wget https://essentia.upf.edu/models/feature-extractors/maest/discogs-maest-30s-pw-2.pb
+
+RUN wget https://essentia.upf.edu/models/classification-heads/voice_instrumental/voice_instrumental-discogs-effnet-1.pb
+RUN wget https://essentia.upf.edu/models/classification-heads/timbre/timbre-discogs-effnet-1.pb
+RUN wget https://essentia.upf.edu/models/classification-heads/approachability/approachability_regression-discogs-effnet-1.pb
+RUN wget https://essentia.upf.edu/models/classification-heads/engagement/engagement_regression-discogs-effnet-1.pb
+RUN wget https://essentia.upf.edu/models/classification-heads/genre_discogs400/genre_discogs400-discogs-effnet-1.pb
+
+
 WORKDIR /app
 
 RUN pip install wheel setuptools pip --upgrade

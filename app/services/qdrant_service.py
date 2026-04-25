@@ -37,6 +37,9 @@ class QdrantService:
             vectors_config={
                 "discogs": models.VectorParams(size=1280, distance=models.Distance.COSINE),
                 "musicnn": models.VectorParams(size=200, distance=models.Distance.COSINE),
+                "maest": models.VectorParams(size=2304, distance=models.Distance.COSINE),
+                "mood": models.VectorParams(size=5, distance=models.Distance.COSINE),
+                "arousal_valence": models.VectorParams(size=2, distance=models.Distance.COSINE),
                 "lyrics": models.VectorParams(size=1024, distance=models.Distance.COSINE),
             },
             sparse_vectors_config={
@@ -51,6 +54,9 @@ class QdrantService:
             vectors_config={
                 "discogs": models.VectorParams(size=1280, distance=models.Distance.COSINE),
                 "musicnn": models.VectorParams(size=200, distance=models.Distance.COSINE),
+                "maest": models.VectorParams(size=2304, distance=models.Distance.COSINE),
+                "mood": models.VectorParams(size=5, distance=models.Distance.COSINE),
+                "arousal_valence": models.VectorParams(size=2, distance=models.Distance.COSINE),
                 "lyrics": models.VectorParams(size=1024, distance=models.Distance.COSINE),
             },
             sparse_vectors_config={
@@ -65,6 +71,9 @@ class QdrantService:
             vectors_config={
                 "discogs": models.VectorParams(size=1280, distance=models.Distance.COSINE),
                 "musicnn": models.VectorParams(size=200, distance=models.Distance.COSINE),
+                "maest": models.VectorParams(size=2304, distance=models.Distance.COSINE),
+                "mood": models.VectorParams(size=5, distance=models.Distance.COSINE),
+                "arousal_valence": models.VectorParams(size=2, distance=models.Distance.COSINE),
                 "lyrics": models.VectorParams(size=1024, distance=models.Distance.COSINE),
             },
             sparse_vectors_config={

@@ -35,11 +35,28 @@ async def create(request: CreateRecordingRequest):
 
     temp_file_path = minio_service.download_file(request.file_url)
 
-    vectors = embedding_service.compute_audio_embeddings(temp_file_path)
+    result = embedding_service.compute_audio_embeddings(temp_file_path)
 
     payload = get_payload_of_recording(request.recording)
+    payload.update(result["features"])
 
-    qdrant_service.insert_point(RECORDINGS_COLLECTION, request.recording['id'], vectors, payload)
+    qdrant_service.insert_point(RECORDINGS_COLLECTION, request.recording['id'], result["vectors"], payload)
+
+    os.remove(temp_file_path)
 
     return {"message": "recording received"}
 
+@router.get("/{recording_id}")
+async def get_recording(recording_id: int):
+    qdrant_service = QdrantService()
+    collection_info = qdrant_service.get_collection_info(RECORDINGS_COLLECTION)
+
+    if not collection_info:
+        raise HTTPException(status_code=404, detail="Recording not found")
+
+    point = qdrant_service.get_points(RECORDINGS_COLLECTION, [recording_id])
+
+    if not point:
+        raise HTTPException(status_code=404, detail="Recording not found")
+
+    return {"recording": point[0].payload}

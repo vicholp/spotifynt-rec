@@ -1,12 +1,8 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from pydantic import BaseModel
-from typing import Optional
-from app.services.minio_service import MinioService
-from app.services.embedding_service import EmbeddingService
-from app.services.qdrant_service import QdrantService, RECORDINGS_COLLECTION
-from sklearn.metrics.pairwise import cosine_similarity
+from app.clients.qdrant_client import QdrantService, RECORDINGS_COLLECTION
 import numpy as np
 from qdrant_client import models
 

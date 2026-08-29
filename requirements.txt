@@ -6,3 +6,5 @@ requests==2.32.4
 minio==7.2.16
 celery[redis]==5.5.3
 ffmpeg==1.4
+watchdog
+pymongo

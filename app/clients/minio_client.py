@@ -1,8 +1,6 @@
 import os
-from typing import Optional
 from minio import Minio
 from minio.error import S3Error
-import uuid
 from app.config import MINIO_ENDPOINT, MINIO_BUCKET, MINIO_ACCESS_KEY, MINIO_SECRET_KEY
 import tempfile
 

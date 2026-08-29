@@ -1,11 +1,13 @@
+import logging
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional
-from app.services.minio_service import MinioService
-from app.services.embedding_service import EmbeddingService
-from app.services.qdrant_service import RECORDINGS_COLLECTION, QdrantService
+from app.clients.minio_client import MinioService
+from app.services.embedding_service import MainEmbeddingService, MaestEmbeddingService
+from app.clients.qdrant_client import RECORDINGS_COLLECTION, QdrantService
+from app.tasks import store_recording_task
 
 router = APIRouter(
     prefix="/recordings",
@@ -16,6 +18,7 @@ router = APIRouter(
 class CreateRecordingRequest(BaseModel):
     recording: dict
     file_url: Optional[str] = None
+    queue: Optional[bool] = True
 
 def get_payload_of_recording(recording: dict):
     tracks = recording.get('track', {})
@@ -29,18 +32,28 @@ def get_payload_of_recording(recording: dict):
 
 @router.post("/")
 async def create(request: CreateRecordingRequest):
+    if request.queue:
+        task = store_recording_task.delay(request.recording, request.file_url)
+
+        logging.info(f"Task {task.id} created for recording {request.recording['id']}")
+
+        return {"task_id": task.id}
+
     minio_service = MinioService()
-    embedding_service = EmbeddingService()
+    main_service = MainEmbeddingService()
+    maest_service = MaestEmbeddingService()
     qdrant_service = QdrantService()
 
     temp_file_path = minio_service.download_file(request.file_url)
 
-    result = embedding_service.compute_audio_embeddings(temp_file_path)
+    main_result = main_service.compute_audio_embeddings(temp_file_path)
+    maest_result = maest_service.compute_maest_embedding(temp_file_path)
+    vectors = {**main_result["vectors"], **maest_result["vectors"]}
 
     payload = get_payload_of_recording(request.recording)
-    payload.update(result["features"])
+    payload.update(main_result["features"])
 
-    qdrant_service.insert_point(RECORDINGS_COLLECTION, request.recording['id'], result["vectors"], payload)
+    qdrant_service.insert_point(RECORDINGS_COLLECTION, request.recording['id'], vectors, payload)
 
     os.remove(temp_file_path)
 

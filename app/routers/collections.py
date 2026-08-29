@@ -1,9 +1,5 @@
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-from typing import Optional
-from app.services.minio_service import MinioService
-from app.services.embedding_service import EmbeddingService
-from app.services.qdrant_service import QdrantService
+from fastapi import APIRouter
+from app.clients.qdrant_client import QdrantService
 
 router = APIRouter(
     prefix="/collections",

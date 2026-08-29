@@ -1,25 +1,11 @@
-import os
-from typing import Optional
-from minio import Minio
-from minio.error import S3Error
-import uuid
-# from app.config import MINIO_ENDPOINT, MINIO_BUCKET, MINIO_ACCESS_KEY, MINIO_SECRET_KEY
 from app.config import QDRANT_HOST
-import tempfile
 
 
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams
 from qdrant_client import QdrantClient, models
-import glob
 
 import os
 import glob
-import numpy as np
-from essentia.standard import MonoLoader, TensorflowPredictEffnetDiscogs
-from sklearn.metrics.pairwise import cosine_similarity
-import json
-from qdrant_client.models import PointStruct
 
 RECORDINGS_COLLECTION = "recordings_collection"
 RELEASES_COLLECTION = "releases_collection"
@@ -102,6 +88,17 @@ class QdrantService:
                     id=point_id,
                     vector=vector,
                     payload=payload,
+                )
+            ],
+        )
+
+    def update_vectors(self, collection_name: str, point_id: str, vector: dict):
+        self.client.update_vectors(
+            collection_name=collection_name,
+            points=[
+                models.PointVectors(
+                    id=point_id,
+                    vector=vector,
                 )
             ],
         )

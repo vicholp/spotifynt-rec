@@ -14,3 +14,8 @@ MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY")
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://redis:6379/0")
 
 QDRANT_HOST = os.getenv("QDRANT_HOST", "http://qdrant:6333")
+
+MONGO_HOST = os.getenv("MONGO_HOST", "mongodb://mongo:27017/")
+MONGO_DB = os.getenv("MONGO_DB", "spotifynt")
+MONGO_USERNAME = os.getenv("MONGO_USERNAME")
+MONGO_PASSWORD = os.getenv("MONGO_PASSWORD")

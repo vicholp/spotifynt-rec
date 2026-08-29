@@ -4,7 +4,7 @@ services:
       dockerfile: ./deploy/local/python.Dockerfile
       context: .
     ports:
-      - "8006:8000"
+      - "8000"
     env_file: .env
     volumes:
       - .:/app
@@ -12,6 +12,56 @@ services:
     networks:
       - spotifynt
       - default
+    deploy:
+      replicas: 1
+
+  worker-main:
+    build:
+      context: ./
+      dockerfile: ./deploy/local/python.Dockerfile
+    command: watchmedo auto-restart -R -d . -- celery -A app.tasks worker --loglevel=info --pool=solo --without-gossip --without-mingle -Q main,celery
+    env_file: .env
+    volumes:
+      - .:/app
+    networks:
+      - spotifynt
+      - default
+    deploy:
+      replicas: 1
+
+  worker-maest:
+    build:
+      context: ./
+      dockerfile: ./deploy/local/python.Dockerfile
+    command: watchmedo auto-restart -R -d . -- celery -A app.tasks worker --loglevel=info --pool=solo --without-gossip --without-mingle -Q maest
+    env_file: .env
+    volumes:
+      - .:/app
+    networks:
+      - spotifynt
+      - default
+    deploy:
+      replicas: 6
+
+  mongo:
+    image: mongo:8
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - "27017"
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379"
+    networks:
+      - spotifynt
+      - default
+    deploy:
+      replicas: 1
 
   qdrant:
     image: qdrant/qdrant:latest
@@ -22,6 +72,7 @@ services:
 
 volumes:
   qdrant_data:
+  mongo_data:
 
 networks:
   spotifynt:

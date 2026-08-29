@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s http://localhost:6333/collections/recordings_collection)",
+      "Bash(curl -s -X POST http://localhost:6333/collections/recordings_collection/points/scroll -H 'Content-Type: application/json' -d '{\"limit\": 200, \"with_payload\": true, \"with_vector\": false}')",
+      "Read(//tmp/**)",
+      "Bash(curl -s -X POST http://localhost:6333/collections/recordings_collection/points/scroll -H 'Content-Type: application/json' -d '{\"limit\": 200, \"with_payload\": false, \"with_vector\": false}')",
+      "Bash(curl -s http://localhost:8080/api/recordings)",
+      "Bash(curl -s \"http://localhost:8080/api/recordings?include=track.release.artist\")",
+      "Bash(curl -s http://localhost:8080/api/)",
+      "Bash(curl -s http://localhost:8080/api/artists)",
+      "Bash(curl -s http://localhost:8080/api/releases)",
+      "Bash(curl -s http://localhost:8080/api/tracks)",
+      "Bash(curl -s http://localhost:8080/api/release-groups)",
+      "Bash(python3)",
+      "Bash(curl -s http://localhost:6333/collections)",
+      "Bash(curl -s -X DELETE http://localhost:6333/collections/releases_collection)",
+      "Bash(curl -s -X DELETE http://localhost:6333/collections/artists_collection)",
+      "Bash(curl -s -X PUT http://localhost:6333/collections/recordings_collection -H 'Content-Type: application/json' -d '{ *)",
+      "Bash(curl -s -X PUT http://localhost:6333/collections/__TRACKED_VAR__ -H 'Content-Type: application/json' -d '{ *)",
+      "Read(//home/vicho/dev/vicholp/spotifynt/spotifynt-downloader/**)",
+      "Bash(docker exec *)",
+      "Bash(docker inspect *)",
+      "Bash(docker stats *)"
+    ]
+  }
+}
